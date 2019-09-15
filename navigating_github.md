@@ -1,5 +1,5 @@
-#Welcome to the *STAT545*
-##Important _URL_: [GitHub] (https://github.com)
+# Welcome to the *STAT545*
+## Important _URL_: [GitHub] (https://github.com)
 
 As GraceHopper said: 
 >I've always been more interested
