@@ -1,0 +1,25 @@
+---
+title: "Hw1"
+output: ioslides_presentation
+---
+
+
+## Table 
+
+```{r, echo = FALSE, warning = FALSE}
+library(gapminder)
+library(tibble)
+library(DT)
+
+DT::datatable(mtcars)
+```
+
+## Structure
+```{r, echo = FALSE, warning = FALSE}
+str(mtcars)
+```
+
+## Summary
+```{r, echo = FALSE, warning = FALSE}
+summary(mtcars)
+```
