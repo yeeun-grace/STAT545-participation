@@ -1,0 +1,22 @@
+---
+title: "Hw01_gapminder"
+output:
+  html_document:
+    fig_caption: yes
+    fig_height: 6
+    fig_width: 7
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+## Table 
+
+```{r, echo = FALSE, warning = FALSE}
+library(gapminder)
+library(tibble)
+library(DT)
+
+DT::datatable(mtcars)
+```
+
