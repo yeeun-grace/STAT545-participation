@@ -1,0 +1,30 @@
+---
+title: "Practice-class3"
+output:
+  html_document: 
+  SETTINGS
+  keep_md: true
+  GO
+  HERE
+```{r}
+keep_md: true
+theme: cerulean
+toc: true
+toc_float: true
+```
+
+---
+```{r}
+library(gapminder)
+library(tibble)
+library(DT)
+```
+
+```{r}
+tibble::as_tibble(mtcars)
+```
+
+```{r}
+DT::datatable(mtcars)
+```
+

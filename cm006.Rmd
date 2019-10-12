@@ -1,7 +1,8 @@
-
 ---
 title: 'cm006: `dplyr` Exercise'
-output: html_notebook
+output: 
+  html_document:
+    keep_md: true
 editor_options: 
   chunk_output_type: inline
 ---
@@ -26,8 +27,8 @@ Load the `gapminder` and `tidyverse` packages. Hint: `suppressPackageStartupMess
     
 ```{r load packages, warning = FALSE, message = FALSE}
 # load your packages here:
-library(FILL_THIS_IN)
-library(FILL_THIS_IN)
+library(gapminder)
+library(tidyverse)
 ```
     
 
@@ -36,7 +37,7 @@ library(FILL_THIS_IN)
 1. Make a data frame containing the columns `year`, `lifeExp`, `country` from the gapminder data, in that order.
 
 ```{r}
-select(gapminder, FILL_THIS_IN)
+select(gapminder, year, lifeExp, country)
 ```
 
 
@@ -47,20 +48,20 @@ select(gapminder, FILL_THIS_IN)
 select(gapminder, country, continent, year, lifeExp)
 
 # Better way:
-select(gapminder, FILL_THIS_IN)
+select(gapminder, country:lifeExp)
 ```
 
 
 3. Select all variables, except `lifeExp`.
 
 ```{r}
-select(gapminder, FILL_THIS_IN)
+select(gapminder, -lifeExp)
 ```
 
 4. Put `continent` first. Hint: use the `everything()` function.
 
 ```{r}
-select(gapminder, FILL_THIS_IN, FILL_THIS_IN)
+select(gapminder, continent, everything())
 ```
 
 
@@ -68,9 +69,9 @@ select(gapminder, FILL_THIS_IN, FILL_THIS_IN)
 
 ```{r}
 # compare
-select(gapminder, FILL_THIS_IN)
+select(gapminder, cont = continent, everything())
 
-rename(gapminder, FILL_THIS_IN)
+rename(gapminder, cont = continent)
 ```
 
 
@@ -79,19 +80,19 @@ rename(gapminder, FILL_THIS_IN)
 1. Order by year.
 
 ```{r}
-arrange(gapminder, FILL_THIS_IN)
+arrange(gapminder, year)
 ```
 
 2. Order by year, in descending order.
 
 ```{r}
-arrange(gapminder, FILL_THIS_IN)
+arrange(gapminder, desc(year))
 ```
 
 3. Order by year, then by life expectancy.
 
 ```{r}
-arrange(gapminder, FILL_THIS_IN, FILL_THIS_IN)
+arrange(gapminder, year, lifeExp)
 ```
 
 ## Piping, `%>%` (8 min)
@@ -109,15 +110,18 @@ This is how I could do it by *nesting* the two function calls:
 arrange(select(gapminder, year, lifeExp, country), year, lifeExp)
 ```
 
+
 Now using with pipes:
 
 ```{r}
 # alter the below to include 2 "pipes"
-arrange(select(gapminder, year, lifeExp, country), year, lifeExp)
+gapminder %>%
+  select(year, lifeExp, country) %>% #this line selects columns year..
+  arrange(desc(year), desc(lifeExp))
 ```
 
 # Resume lecture 
-
+Cmd+Shift+m = %>% 
 Return to guide at section 6.7.
 
 ## `filter()` (10 min)
@@ -126,33 +130,46 @@ Return to guide at section 6.7.
 
 ```{r}
 gapminder %>%
-  filter(FILL_THIS_IN)
+  filter(pop > 100000000)
 ```
 
 2. Your turn: of those rows filtered from step 1., only take data from Asia.
 
 ```{r}
 gapminder %>%
-  filter(FILL_THIS_IN)
+  filter(pop > 100000000) %>% 
+  filter(continent == 'Asia')
+```
+```{r}
+gapminder %>%
+  filter(pop > 100000000 & continent == 'Asia') 
 ```
 
-3. Repeat 2, but take data from countries Brazil, and China. 
+```{r}
+gapminder %>% 
+  filter(pop > 100000000, 
+         continent == 'Asia')
+```
+
+3. Take data from countries Brazil, and China. 
 
 ```{r}
 gapminder %>%
-  filter(FILL_THIS_IN)
+  filter(pop > 100000000,
+         country == 'Brazil'| country == 'China')
 ```
 
 ## `mutate()` (10 min)
 
 Let's get: 
 
-- GDP by multiplying GPD per capita with population, and
+- GDP by multiplying GDP per capita with population, and
 - GDP in billions, named (`gdpBill`), rounded to two decimals.
 
 ```{r}
-gapminder %>%
-  mutate(FILL_THIS_IN)
+gapminder %>%  ## to store the new variable, we need to put it to the new dataset
+  mutate(gdpBill = (gdpPercap*pop/100000000) %>% round(digits = 2))
+
 ```
 
 Notice the backwards compatibility! No need for loops!
@@ -161,7 +178,7 @@ Try the same thing, but with `transmute` (drops all other variables).
 
 ```{r}
 gapminder %>%
-  transmute(FILL_THIS_IN)
+  transmute(gdpBill = gdpPercap*pop/1000000000)  # mutate & select
 ```
 
 The `if_else` function is useful for changing certain elements in a data frame.
@@ -170,12 +187,14 @@ Example: Suppose Canada's 1952 life expectancy was mistakenly entered as 68.8 in
 
 ```{r}
 gapminder %>%
-  mutate(FILL_THIS_IN)
+  mutate(lifeExp = if_else(country == 'canada' & year == 1952, 70, lifeExp))
 ```
 
 Your turn: Make a new column called `cc` that pastes the country name followed by the continent, separated by a comma. (Hint: use the `paste` function with the `sep=", "` argument).
 
 ```{r}
+gapminder %>% 
+  mutate(cc = paste(, sep = ",  "))
 ```
 
 These functions we've seen are called __vectorized functions__.
