@@ -2,27 +2,45 @@
 title: "hw03"
 output: html_document
 ---
+```{r}
+#Task Option 2
+#Get the maximum and minimum of GDP per capita for all continents.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+gapminder %>% 
+  group_by(continent) %>% 
+  summarize(maximum    = max(gdpPercap),
+            minimum = min(gdpPercap))
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
+#Task Option 3
+#Look at the spread of GDP per capita within the continents. 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## using geom_boxplot to see the general spread
+##adding geom_point - to see gdpPercap for each country
 
-```{r cars}
-summary(cars)
+gapminder %>% 
+  ggplot(aes(continent, gdpPercap)) +
+  geom_point() +
+  geom_boxplot()
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+```{r}
+#Task Option 5
+#How is life expectancy changing over time on different continents?
+
+#gapminder 
+
+gapminder %>%
+  group_by(continent, year) %>%     ## this is to calculate average life expectancy in each continent; each year
+  mutate(life_expectancy = mean(lifeExp)) %>%
+  ggplot(aes(year, life_expectancy, colour = continent)) +
+  geom_line(alpha = 0.4)
+  
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
