@@ -2,13 +2,21 @@
 title: "hw03"
 output: html_document
 ---
+
+```{r}
+library(gapminder)
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+```
+
 ```{r}
 #Task Option 2
 #Get the maximum and minimum of GDP per capita for all continents.
 
 gapminder %>% 
   group_by(continent) %>% 
-  summarize(maximum    = max(gdpPercap),
+  summarize(maximum = max(gdpPercap),
             minimum = min(gdpPercap))
 ```
 
